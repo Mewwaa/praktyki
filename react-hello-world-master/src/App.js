@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import { createStore } from 'redux'
 
@@ -87,6 +87,8 @@ for (let index = 0; index < messages_list.length; index++) {
       temp_list2.push(channel)
 }
 
+
+import Login from './login.js'
 
 class App extends Component {
   render() {
