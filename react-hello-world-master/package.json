@@ -1,18 +1,19 @@
 {
   "name": "hello-world",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "main": "App.js",
   "private": true,
   "dependencies": {
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
-    "react-scripts": "^5.0.0"
-  },
+    "react-scripts": "^5.0.0",
+    "@slack/web-api": "^6.2.0-rc.0",
+    "express": "^4.17.1"
+  }, 
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-scripts start"
   },
+
   "eslintConfig": {
     "extends": "react-app"
   },
