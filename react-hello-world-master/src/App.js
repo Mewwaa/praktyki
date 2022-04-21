@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
 import './App.css';
-
-import Login from './login.js'
+import Dashboard from './dashboard';
+import Login from './login.js';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes
+} from "react-router-dom";
 
 class App extends Component {
   render() {
     return (
-      <div>
-        <Login />
-      </div>
+      <>
+        <Router>
+          <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />  
+          </Routes>
+        </Router>
+      </>
     );
   }
 }
