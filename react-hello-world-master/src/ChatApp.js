@@ -1,7 +1,7 @@
 import { ReactSlackChat } from "react-slack-chat/dist/react-slack-chat-with-default-hooks";
 import React from "react";
 
-export default function App() {
+export default function ChatApp() {
   return (
     <ReactSlackChat
       botName=""
