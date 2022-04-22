@@ -89,7 +89,7 @@ function registerValidSW(swUrl, config) {
                 config.onSuccess(registration);
               }
             }
-          }//GEDEK TU BYL :))))))))))))))))))))))))))))))))))))))
+          }
         };
       };
     })
