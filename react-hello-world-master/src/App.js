@@ -1,28 +1,61 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import { createStore } from 'redux'
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Hello world!
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+
+class channels {
+  constructor(name){
+    this.name = name;
   }
 }
 
-export default App;
+var channels1 = new channels("A")
+var channels2 = new channels("B")
+var channels3 = new channels("C")
+var channels4 = new channels("D")
+const store = createStore(todos, ['Use Redux'])
+
+store.dispatch(addTodo(channels1))
+store.dispatch(addTodo(channels2))
+store.dispatch(addTodo(channels3))
+store.dispatch(addTodo(channels4))
+
+
+
+
+function todos(state = [], action) {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return state.concat([action.text])
+    default:
+      return state
+  }
+}
+
+function addTodo(text) {
+  return{
+    type: 'ADD_TODO',
+    text
+  }
+}
+
+localStorage.setItem('user', JSON.stringify(store.getState()));
+var user = JSON.parse(localStorage.getItem('user'));
+console.log(user)
+
+
+
+export default function App() {
+
+  return (
+    <div className="App">
+
+      <h1>{JSON.stringify(user)}
+        
+      </h1>
+    </div>
+  );
+}
+
+
+
