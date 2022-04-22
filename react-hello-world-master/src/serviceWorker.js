@@ -89,7 +89,7 @@ function registerValidSW(swUrl, config) {
                 config.onSuccess(registration);
               }
             }
-          }
+          }//GEDEK TU BYL :))))))))))))))))))))))))))))))))))))))
         };
       };
     })
@@ -108,7 +108,7 @@ function checkValidServiceWorker(swUrl, config) {
         response.status === 404 ||
         (contentType != null && contentType.indexOf('javascript') === -1)
       ) {
-        // No service worker found. Probably a different app. Reload the page.
+        // No service worker found. Probably a different app eload the page.
         navigator.serviceWorker.ready.then(registration => {
           registration.unregister().then(() => {
             window.location.reload();
