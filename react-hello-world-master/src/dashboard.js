@@ -1,3 +1,4 @@
+import { ReactSlackChat } from "react-slack-chat/dist/react-slack-chat-with-default-hooks";
 import React, { Component } from 'react';
 import './dashboard.css';
 // import store1 from './App.js'
@@ -72,7 +73,24 @@ class Dashboard extends Component {
                         </ol>
                         </div>
                     </div>
- 
+        <ReactSlackChat
+        botName="490bot" // VisitorID, CorpID, Email, IP address etc.
+        apiToken="eG94Yi0xNTI2NjcyMDA4NTI4LTE1MDI5NTcwNTc2MzQteEdWRU1YWkd1SzBPbWlSdzBKZmJ0UjFE"
+        channels={[
+          {
+            name: "random",
+            id: "",
+          },
+          {
+            name: "general",
+            id: ""
+          }
+        ]}
+        helpText="Chat"
+        themeColor="#82CAFF"
+        userImage="http://www.iconshock.com/img_vista/FLAT/mail/jpg/robot_icon.jpg"
+      />
+    );
         </div>
 
     );

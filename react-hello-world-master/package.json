@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.26.1",
     "debug": "^4.3.4",
+    "public-ip": "4.0.2",
     "react": "^16.8.2",
     "react-cookie": "^4.1.1",
     "react-dom": "^16.8.2",
@@ -12,8 +13,11 @@
     "react-scripts": "^5.0.1",
     "redux": "^4.1.2"
   },
+  "devDependencies": {
+    "typescript": "3.8.3"
+  },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
