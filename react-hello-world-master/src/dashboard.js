@@ -1,4 +1,4 @@
-import { ReactSlackChat } from "react-slack-chat/dist/react-slack-chat-with-default-hooks";
+import { ReactSlackChat } from 'react-slack-chat';
 import React, { Component } from 'react';
 import './dashboard.css';
 // import store1 from './App.js'
