@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import { createStore } from 'redux'
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes
+} from "react-router-dom";
+import Dashboard from './dashboard';
+import Login from './login.js';
 
 function browseMessages(text) {
   return{
@@ -87,7 +94,6 @@ for (let index = 0; index < messages_list.length; index++) {
       temp_list2.push(channel)
 }
 
-
 class App extends Component {
   render() {
     
@@ -103,6 +109,4 @@ class App extends Component {
     );
   }
 }
-
-
-
+export default App;
