@@ -1,9 +1,7 @@
 import { ReactSlackChat } from 'react-slack-chat';
 import React, { Component } from 'react';
 import './dashboard.css';
-import { AuthFailedModal } from './dialog.js'
-
-// import store1 from './App.js'
+import { AuthFailedModal } from './dialog.js';
 
 class Dashboard extends Component {
     constructor(props) {
@@ -27,30 +25,44 @@ class Dashboard extends Component {
             )
         }
     
+        this.state = {
+            query: '',
+            query2: '' 
+        }
+    }  
+
+  render() {
     const channels = this.props.store1;
     const messages = this.props.store2;
-    const channelList = channels.map((channel) =>
-    <li>{channel.name}</li>
-    );
-    
-    
-    const messagesList = messages.map((message) =>
-    <li>{message.content}</li>
-    );
-
-
     return (
       <div className="dashboard_div">
+          
           <div className="logo_div">
           </div>
           <div className="searchDivs">
             <div className="searchCategory_tab">
                 <div className="input_container">
-                    <input type="text" placeholder='Search brand' className="brandSearchBar" />
+                    <input type="text" placeholder='Search brand' className="brandSearchBar" onChange={event => this.setState({query : event.target.value})} />
+                    
                 </div>
             <h1>SEARCHED BRANDS</h1>
             <ul className='searchedFromList'>
-                {channelList}
+                {
+                    channels.filter(channel => {
+                            if (this.state.query === '') {
+                                return channel
+                            } else if (channel.name.toLowerCase().includes(this.state.query.toLowerCase())) {
+                            return channel;
+                            }
+                        }).map((channel, idChannels) => (
+                            <div className="searchedFromList" key={idChannels}>
+                                <ul>
+                                    <li>{channel.name}</li>
+                                </ul>
+                            
+                            </div>
+                        ))
+                    }
             </ul>
         </div>
         <div className="searchResults_tab">
@@ -58,7 +70,6 @@ class Dashboard extends Component {
             <h1>SAVED BRANDS</h1>
                 
             <ul className='addedFromList'>
-            {channelList}
             </ul>
         </div>
     </div>
@@ -67,18 +78,48 @@ class Dashboard extends Component {
                             <h1 className='h1divs'>SUCCEDED</h1>
         
                                 <div className="scrollSucceded" id="scrollSuccededID">
-                                <ol>
-                                {messagesList} 
+                                <ol className='success_from_list'>
+                                {
+                                    messages.filter(message => {
+                                            if (this.state.query2 === '') {
+                                                return message
+                                            } else if (message.content.toLowerCase().includes(this.state.query2.toLowerCase()) && message.ifSucceded === "SUCCEDED") {
+                                            return message;
+                                            }
+                                        }).map((message, idMessages) => (
+                                            <div className="success_from_list" key={idMessages}>
+                                                <ul>
+                                                    <li>{message.content}</li>
+                                                </ul>
+                                            
+                                            </div>
+                                        ))
+                                    }
                                 </ol>
                                 </div>
                         </div>
 
                     <div className="failed_tab">
-                        <h1 className='h1divs'>FAILED <input type="text" placeholder='Search records' className="recordsSearchBar" />
+                        <h1 className='h1divs'>FAILED <input type="text" placeholder='Search records' className="recordsSearchBar" onChange={event => this.setState({query2 : event.target.value})} />
                             </h1>
                         <div className="scrollFailed">
-                        <ol>
-                               {messagesList} 
+                        <ol className='failed_from_list'>
+                        {
+                                    messages.filter(message => {
+                                            if (this.state.query2 === '') {
+                                                return message
+                                            } else if (message.content.toLowerCase().includes(this.state.query2.toLowerCase()) && message.ifSucceded === "FAILED") {
+                                            return message;
+                                            }
+                                        }).map((message, idMessages) => (
+                                            <div className="failed_from_list" key={idMessages}>
+                                                <ul>
+                                                    <li>{message.content}</li>
+                                                </ul>
+                                            
+                                            </div>
+                                        ))
+                                    }
                         </ol>
                         </div>
                     </div>
