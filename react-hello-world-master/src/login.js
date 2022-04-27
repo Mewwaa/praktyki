@@ -5,7 +5,7 @@ import logo from './logo.jpg'
 const scopes = "identity.basic,identity.email";
 const clientId = '3372401797858.3408464854688'
 const url = `https://slack.com/oauth/v2/authorize?user_scope=${scopes}&client_id=${clientId}`;
-
+export {clientId};
 class Login extends Component {
   constructor(props) {
     super(props);

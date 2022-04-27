@@ -8,6 +8,9 @@ import {
 } from "react-router-dom";
 import Dashboard from './dashboard';
 import Login from './login.js';
+import {clientId} from './login.js';
+
+localStorage.setItem('clientId',clientId);
 
 function browseMessages(text) {
   return{
