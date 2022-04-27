@@ -9,8 +9,8 @@ import {
 import Dashboard from './dashboard';
 import Login from './login.js';
 import {clientId} from './login.js';
-
 localStorage.setItem('clientId',clientId);
+import {channels, messages} from './model.js';
 
 function browseMessages(text) {
   return{
@@ -28,34 +28,20 @@ function b_messages(state = [], action) {
   }
 }
 
-class messages{
-  constructor(ifSucceded,content){
-    this.ifSucceded = ifSucceded
-    this.content = content
-  }
-}
 const store2 = createStore(b_messages, [])
-var message1 = new messages("FAILED","Random message 1")
-var message2 = new messages("SUCCEDED","Random message 2")
-var message3 = new messages("SUCCEDED","Random message 3")
-var message4 = new messages("FAILED","Random message 4")
+var message1 = new messages(1,"FAILED","Random message 1")
+var message2 = new messages(2,"SUCCEDED","Random message 2")
+var message3 = new messages(3,"SUCCEDED","Random message 3")
+var message4 = new messages(4,"FAILED","Random message 4")
 store2.dispatch(browseMessages(message1))
 store2.dispatch(browseMessages(message2))
 store2.dispatch(browseMessages(message3))
 store2.dispatch(browseMessages(message4))
 
-
-
-class channels {
-  constructor(name){
-    this.name = name;
-  }
-}
-
-var channels1 = new channels("channel 1")
-var channels2 = new channels("channel 2")
-var channels3 = new channels("channel 3")
-var channels4 = new channels("channel 4")
+var channels1 = new channels(1,"channel 1")
+var channels2 = new channels(2,"channel 2")
+var channels3 = new channels(3,"channel 3")
+var channels4 = new channels(4,"channel 4")
 const store1 = createStore(b_channles, [])
 
 store1.dispatch(browseChannels(channels1))
