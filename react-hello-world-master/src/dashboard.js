@@ -7,6 +7,10 @@ class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {isLoggedIn: true};
+        this.state = {
+            searchChannelsQuery: '',
+            searchMessagesQuery: '' 
+        }
       }
 
     componentDidMount(){
@@ -25,10 +29,7 @@ class Dashboard extends Component {
             )
         }
     
-        this.state = {
-            searchChannelsQuery: '',
-            searchMessagesQuery: '' 
-        }
+        
     }  
 
   render() {
