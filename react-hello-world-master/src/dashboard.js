@@ -26,8 +26,8 @@ class Dashboard extends Component {
         }
     
         this.state = {
-            query: '',
-            query2: '' 
+            searchChannelsQuery: '',
+            searchMessagesQuery: '' 
         }
     }  
 
@@ -42,16 +42,16 @@ class Dashboard extends Component {
           <div className="searchDivs">
             <div className="searchCategory_tab">
                 <div className="input_container">
-                    <input type="text" placeholder='Search brand' className="brandSearchBar" onChange={event => this.setState({query : event.target.value})} />
+                    <input type="text" placeholder='Search brand' className="brandSearchBar" onChange={event => this.setState({searchChannelsQuery : event.target.value})} />
                     
                 </div>
             <h1>SEARCHED BRANDS</h1>
             <ul className='searchedFromList'>
                 {
                     channels.filter(channel => {
-                            if (this.state.query === '') {
+                            if (this.state.searchChannelsQuery === '') {
                                 return channel
-                            } else if (channel.name.toLowerCase().includes(this.state.query.toLowerCase())) {
+                            } else if (channel.name.toLowerCase().includes(this.state.searchChannelsQuery.toLowerCase())) {
                             return channel;
                             }
                         }).map((channel, idChannels) => (
@@ -81,9 +81,9 @@ class Dashboard extends Component {
                                 <ol className='success_from_list'>
                                 {
                                     messages.filter(message => {
-                                            if (this.state.query2 === '') {
+                                            if (this.state.searchMessagesQuery === '') {
                                                 return message
-                                            } else if (message.content.toLowerCase().includes(this.state.query2.toLowerCase()) && message.ifSucceded === "SUCCEDED") {
+                                            } else if (message.content.toLowerCase().includes(this.state.searchMessagesQuery.toLowerCase()) && message.ifSucceded === "SUCCEDED") {
                                             return message;
                                             }
                                         }).map((message, idMessages) => (
@@ -100,15 +100,15 @@ class Dashboard extends Component {
                         </div>
 
                     <div className="failed_tab">
-                        <h1 className='h1divs'>FAILED <input type="text" placeholder='Search records' className="recordsSearchBar" onChange={event => this.setState({query2 : event.target.value})} />
+                        <h1 className='h1divs'>FAILED <input type="text" placeholder='Search records' className="recordsSearchBar" onChange={event => this.setState({searchMessagesQuery : event.target.value})} />
                             </h1>
                         <div className="scrollFailed">
                         <ol className='failed_from_list'>
                         {
                                     messages.filter(message => {
-                                            if (this.state.query2 === '') {
+                                            if (this.state.searchMessagesQuery === '') {
                                                 return message
-                                            } else if (message.content.toLowerCase().includes(this.state.query2.toLowerCase()) && message.ifSucceded === "FAILED") {
+                                            } else if (message.content.toLowerCase().includes(this.state.searchMessagesQuery.toLowerCase()) && message.ifSucceded === "FAILED") {
                                             return message;
                                             }
                                         }).map((message, idMessages) => (

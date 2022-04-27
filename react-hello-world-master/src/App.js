@@ -9,8 +9,8 @@ import {
 import Dashboard from './dashboard';
 import Login from './login.js';
 import {clientId} from './login.js';
-
 localStorage.setItem('clientId',clientId);
+import {channels, messages} from './model.js';
 
 function browseMessages(text) {
   return{
@@ -28,13 +28,6 @@ function b_messages(state = [], action) {
   }
 }
 
-class messages{
-  constructor(id,ifSucceded,content){
-    this.id = id
-    this.ifSucceded = ifSucceded
-    this.content = content
-  }
-}
 const store2 = createStore(b_messages, [])
 var message1 = new messages(1,"FAILED","Random message 1")
 var message2 = new messages(2,"SUCCEDED","Random message 2")
@@ -44,15 +37,6 @@ store2.dispatch(browseMessages(message1))
 store2.dispatch(browseMessages(message2))
 store2.dispatch(browseMessages(message3))
 store2.dispatch(browseMessages(message4))
-
-
-
-class channels {
-  constructor(id,name){
-    this.id = id
-    this.name = name;
-  }
-}
 
 var channels1 = new channels(1,"channel 1")
 var channels2 = new channels(2,"channel 2")
