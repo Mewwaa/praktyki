@@ -1,23 +1,32 @@
 import { ReactSlackChat } from 'react-slack-chat';
 import React, { Component } from 'react';
 import './dashboard.css';
-// import store1 from './App.js'
-     
+import { AuthFailedModal } from './dialog.js'
 
+// import store1 from './App.js'
 
 class Dashboard extends Component {
-  render() {
-    // const  failedMessagesList = messages.filter(message => message.includes("FAILED")).map(failedMessage => (
-    //     <li>
-    //       {failedMessage.content}
-    //     </li>
-    // ));
+    constructor(props) {
+        super(props);
+        this.state = {isLoggedIn: true};
+      }
 
-    // const filteredFailed = messages.filter(message => {
-    //     return (<li>{message.ifSucceded === 'FAILED'}</li>)
-    // });
-
-    // console.log(messages)
+    componentDidMount(){
+        var client_id_return = localStorage.getItem('clientId');
+        const client_id_return_slice = client_id_return.slice(0,13);
+        if(!window.location.href.includes(client_id_return_slice)){
+            this.setState({ isLoggedIn : false})
+            console.log("Login failed");
+        }
+    };
+    render() {
+        const isLoggedIn = this.state.isLoggedIn;
+        if (!isLoggedIn) {
+            return (
+                <AuthFailedModal/>
+            )
+        }
+    
     const channels = this.props.store1;
     const messages = this.props.store2;
     const channelList = channels.map((channel) =>
