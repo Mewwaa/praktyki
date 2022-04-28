@@ -3,6 +3,48 @@ import React, { Component } from 'react';
 import './dashboard.css';
 import { AuthFailedModal } from './dialog.js';
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const { WebClient }  = require('@slack/web-api');
+const token = 'xoxb-3372401797858-3387082004324-yivwwMv90jBNa2wAuATL67YP'
+const web = new WebClient(token);
+delete web["axios"].defaults.headers["User-Agent"];
+
+
+async function getAllChannels(options) {
+    async function pageLoaded(accumulatedChannels, res) {
+      // Merge the previous result with the results in the current page
+      const mergedChannels = accumulatedChannels.concat(res.channels);
+  
+      // When a `next_cursor` exists, recursively call this function to get the next page.
+      if (res.response_metadata && res.response_metadata.next_cursor && res.response_metadata.next_cursor !== '') {
+        // Make a copy of options
+        const pageOptions = { ...options };
+        // Add the `cursor` argument
+        pageOptions.cursor = res.response_metadata.next_cursor;
+  
+        return pageLoaded(mergedChannels, await web.conversations.list(pageOptions));
+      }
+  
+      // Otherwise, we're done and can return the result
+      return mergedChannels;
+    }
+    return pageLoaded([], await web.conversations.list(options));
+  }
+  
+
 class Dashboard extends Component {
     constructor(props) {
         super(props);
@@ -20,6 +62,15 @@ class Dashboard extends Component {
             this.setState({ isLoggedIn : false})
             console.log("Login failed");
         }
+
+        (async () => {
+            const allChannels = await getAllChannels({ exclude_archived: true, types: 'public_channel' });
+            return allChannels;
+        })().then((channels)=> {
+            console.log(channels);
+            // toDO, PUSH IT USING REDUCER
+        })
+      
     };
     render() {
         const isLoggedIn = this.state.isLoggedIn;
