@@ -27,5 +27,5 @@ Your app is ready to be deployed!<br>
 
 Install ESLint from VSC extensions.<br>
 
-<img src="./src/eslint.png">
+<img src="./docs/eslint.png">
 
