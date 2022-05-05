@@ -14,7 +14,7 @@ html, body {
 .logo_div{
     height: 200px;
     width: 100%;
-    background-image: url('logo.png');
+    background-image: url('img/logo.png');
     background-repeat: no-repeat;
     background-position: center;
     background-color: rgb(121, 121, 121);
@@ -91,7 +91,7 @@ input.brandSearchBar {
     padding: 4px 7px;
     outline: 0;
     -webkit-appearance: none;
-    background: white url(search.png) left no-repeat;
+    background: white url("img/search.png") left no-repeat;
     
 }
   
@@ -117,7 +117,7 @@ input.recordsSearchBar {
     padding: 4px 7px;
     outline: 0;
     -webkit-appearance: none;
-    background: white url(search.png) left no-repeat;
+    background: white url("img/search.png") left no-repeat;
     
 }
   
@@ -145,3 +145,29 @@ ul li::before{
     margin-left: -1em;
 }
 
+
+ol li{
+    display: inline-block;
+}
+
+.AddToListButton{
+    text-decoration: none;
+    color: #000000;
+    margin-left: 50px;
+    display:inline-block;
+    font-size: 20px;
+    height: 30px;
+    width: 30px;
+    font-weight: bold;
+}
+
+.removeFromListButton{
+    text-decoration: none;
+    color: #000000;
+    margin-left: 50px;
+    display:inline-block;
+    font-size: 20px;
+    height: 30px;
+    width: 30px;
+    font-weight: bold;
+}

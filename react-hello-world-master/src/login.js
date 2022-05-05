@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './login.css';
-import logo from './logo.jpg'
+import logo from './img/logo.jpg'
 
 const scopes = "identity.basic,identity.email";
 const clientId = '3372401797858.3408464854688'
