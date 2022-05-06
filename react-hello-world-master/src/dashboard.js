@@ -2,6 +2,7 @@ import { ReactSlackChat } from 'react-slack-chat';
 import React, { Component } from 'react';
 import './dashboard.css';
 import { AuthFailedModal } from './dialog.js';
+import {ItemList} from './model.js';
 
 class Dashboard extends Component {
     constructor(props) {
@@ -9,9 +10,37 @@ class Dashboard extends Component {
         this.state = {isLoggedIn: true};
         this.state = {
             searchChannelsQuery: '',
-            searchMessagesQuery: '' 
+            searchMessagesQuery: '',
+            channelsFromSlack: props.channels,
+            channelsSaved: []
         }
-      }
+        this.moveSearchedToSavedChannels = this.moveSearchedToSavedChannels.bind(this);
+        this.moveSavedToSearchedChannels = this.moveSavedToSearchedChannels.bind(this);
+    }
+
+    moveSearchedToSavedChannels(itemId) {
+        let tempChannelsFromSlack = [...this.state.channelsFromSlack];
+        let tempFilteredChannels = tempChannelsFromSlack.filter(item => item.id == itemId)
+
+        let tempChannelsSaved = [ ...this.state.channelsSaved ]
+        tempChannelsSaved = tempChannelsSaved.concat(tempFilteredChannels)
+        this.setState({
+            channelsFromSlack : tempChannelsFromSlack.filter(item => item.id != itemId),
+            channelsSaved : tempChannelsSaved,
+        })
+    }
+
+    moveSavedToSearchedChannels(itemId) {
+        let tempChannelsSaved = [...this.state.channelsSaved];
+        let tempFilteredSavedChannels = tempChannelsSaved.filter(item => item.id == itemId)
+
+        let tempChannelsFromSlack = [ ...this.state.channelsFromSlack ]
+        tempChannelsFromSlack = tempChannelsFromSlack.concat(tempFilteredSavedChannels)
+        this.setState({
+            channelsFromSlack : tempChannelsFromSlack,
+            channelsSaved : tempChannelsSaved.filter(item => item.id != itemId),
+        })
+    }
 
     componentDidMount(){
         var client_id_return = localStorage.getItem('clientId');
@@ -31,10 +60,16 @@ class Dashboard extends Component {
     
         
     }  
-
+    render(){
+        return(
+        <div>
+            <ItemList moveSearchedToSavedChannels={this.moveSearchedToSavedChannels} items={this.state.channelsFromSlack} allItems={this.props.channels} />
+            <ItemList moveSearchedToSavedChannels={this.moveSearchedToSavedChannels} items={this.state.channelsSaved} allItems={this.props.channels} />
+        </div>
+        )
+    }
+    
   render() {
-    const channels = this.props.store1;
-    const messages = this.props.store2;
     return (
       <div className="dashboard_div">
           
@@ -49,7 +84,7 @@ class Dashboard extends Component {
             <h1>SEARCHED BRANDS</h1>
             <ul className='searchedFromList'>
                 {
-                    channels.filter(channel => {
+                    this.state.channelsFromSlack.filter(channel => {
                             if (this.state.searchChannelsQuery === '') {
                                 return channel
                             } else if (channel.name.toLowerCase().includes(this.state.searchChannelsQuery.toLowerCase())) {
@@ -58,7 +93,12 @@ class Dashboard extends Component {
                         }).map((channel, idChannels) => (
                             <div className="searchedFromList" key={idChannels}>
                                 <ul>
-                                    <li>{channel.name}</li>
+                                    <li>
+                                        {channel.name}
+                                        <button className='AddToListButton' onClick={() => this.moveSearchedToSavedChannels(channel.id)}>
+                                        +
+                                        </button>
+                                    </li>
                                 </ul>
                             
                             </div>
@@ -71,6 +111,14 @@ class Dashboard extends Component {
             <h1>SAVED BRANDS</h1>
                 
             <ul className='addedFromList'>
+                {   
+                    this.state.channelsSaved.map((item) =>  <ul className='addedFromList'><li>
+                        {item.name}
+                        <button className='removeFromListButton' onClick={() => this.moveSavedToSearchedChannels(item.id)}>
+                            -
+                        </button>
+                    </li></ul>)
+                }
             </ul>
         </div>
     </div>
@@ -81,7 +129,7 @@ class Dashboard extends Component {
                                 <div className="scrollSucceded" id="scrollSuccededID">
                                 <ol className='success_from_list'>
                                 {
-                                    messages.filter(message => {
+                                    this.props.messages.filter(message => {
                                             if (this.state.searchMessagesQuery === '') {
                                                 return message
                                             } else if (message.content.toLowerCase().includes(this.state.searchMessagesQuery.toLowerCase()) && message.ifSucceded === "SUCCEDED") {
@@ -90,7 +138,7 @@ class Dashboard extends Component {
                                         }).map((message, idMessages) => (
                                             <div className="success_from_list" key={idMessages}>
                                                 <ul>
-                                                    <li>{message.content}</li>
+                                                    <li>{message.content} </li>
                                                 </ul>
                                             
                                             </div>
@@ -106,7 +154,7 @@ class Dashboard extends Component {
                         <div className="scrollFailed">
                         <ol className='failed_from_list'>
                         {
-                                    messages.filter(message => {
+                                    this.props.messages.filter(message => {
                                             if (this.state.searchMessagesQuery === '') {
                                                 return message
                                             } else if (message.content.toLowerCase().includes(this.state.searchMessagesQuery.toLowerCase()) && message.ifSucceded === "FAILED") {
@@ -141,7 +189,7 @@ class Dashboard extends Component {
         themeColor="#82CAFF"
         userImage="http://www.iconshock.com/img_vista/FLAT/mail/jpg/robot_icon.jpg"
       />
-    );
+
         </div>
 
     );

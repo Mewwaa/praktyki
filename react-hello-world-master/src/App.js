@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { createStore } from 'redux'
+import {channels, messages} from './model.js';
 import {
   BrowserRouter as Router,
   Route,
@@ -92,7 +93,7 @@ class App extends Component {
         <Router>
           <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard store1={store1.getState()} store2={store2.getState()}/>} />  
+          <Route path="/dashboard" element={<Dashboard allItems={channels.name} channels={store1.getState()} messages={store2.getState()}/>} />  
           </Routes>
         </Router>
       </>
