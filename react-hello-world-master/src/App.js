@@ -10,7 +10,6 @@ import {
 import Dashboard from './dashboard';
 import Login from './login.js';
 import {clientId} from './login.js';
-import {channels, messages} from './model.js';
 localStorage.setItem('clientId',clientId);
 
 
