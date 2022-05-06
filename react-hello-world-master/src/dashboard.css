@@ -36,17 +36,18 @@ html, body {
 .searchCategory_tab{
     background-color: #cecece;
     height: 50%;
-    border-right: 5px solid black; 
+    border-right: 1px solid black; 
     overflow: hidden;
     border-left: 1px solid black; 
+    font-size: 20px;
     overflow: auto;
 }
 .searchResults_tab{
     background-color: #cecece;
     height: 50%;
-    
+    font-size: 20px;
     border-top: 1px solid black;
-    border-right: 5px solid black; 
+    border-right: 1px solid black; 
     overflow: hidden;
     border-bottom: 1px solid black;
     border-left: 1px solid black;overflow: auto;
@@ -69,7 +70,7 @@ html, body {
     height: 100%;
     float: left;
     overflow:auto;
-    box-shadow:-2px 0px 0px 0px black;
+    box-shadow:-1px 0px 0px 0px black;
     background-color: #acacae;
     border-bottom: 1px solid black;
 }
@@ -79,6 +80,8 @@ input.brandSearchBar {
     margin: 0 auto;
     display: block;
     margin-top:10px;
+    margin-right: 10px;
+    float: right;
     width: 150px;
     border: 1px solid #ccc;
     -moz-border-radius: 10px;
