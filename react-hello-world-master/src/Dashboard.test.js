@@ -1,20 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Dashboard from './dashboard';
-
-class messages{
-  constructor(ifSucceded,content){
-    this.ifSucceded = ifSucceded
-    this.content = content
-  }
-}
-
-class channels {
-  constructor(name){
-    this.name = name;
-  }
-}
-
+import { messages } from './model';
+import { channels } from './model';
 
 var channels1 = new channels("channel 1")
 var channels2 = new channels("channel 2")
