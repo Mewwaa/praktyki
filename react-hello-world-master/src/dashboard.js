@@ -1,10 +1,11 @@
 import { ReactSlackChat } from 'react-slack-chat';
 import React, { Component } from 'react';
 import './dashboard.css';
+
 import { AuthFailedModal } from './dialog.js';
 import {ItemList} from './model.js';
 import { createStore } from 'redux'
-
+import { send_mail } from './email.js'
 
 const store1 = createStore(b_channles, [])
 const allItems = store1.name
@@ -197,7 +198,8 @@ class Dashboard extends Component {
 
             <div className="succeded_tab">
                             <h1 className='h1divs'>SUCCEDED</h1>
-        
+                            <button onClick={()=>send_mail(['oliwier.matynia@tomtom.com'], 'test', '<ul id="list"><li>Hello World</li></ul>')}>Send Email</button>
+                             {/*function for sending emails - to be implemented in chat*/}
                                 <div className="scrollSucceded" id="scrollSuccededID">
                                 <ol className='success_from_list'>
                                 {

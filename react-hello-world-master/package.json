@@ -12,6 +12,8 @@
     "eslint-plugin-react": "^7.29.4",
     "jest": "23.6.0",
     "lru-cache": "^7.8.1",
+    "mailslurp-client": "^15.7.5",
+    "node-html-parser": "^5.3.3",
     "public-ip": "4.0.2",
     "querystring-es3": "^0.2.1",
     "react": "^16.8.2",
