@@ -77,11 +77,11 @@ class Dashboard extends Component {
           </div>
           <div className="searchDivs">
             <div className="searchCategory_tab">
-                <div className="input_container">
-                    <input type="text" placeholder='Search brand' className="brandSearchBar" onChange={event => this.setState({searchChannelsQuery : event.target.value})} />
+                {/* <div className="input_container">
                     
-                </div>
-            <h1>SEARCHED BRANDS</h1>
+                    
+                </div> */}
+            <h1>SEARCHED BRANDS  <input type="text" placeholder='Search brand' className="brandSearchBar" onChange={event => this.setState({searchChannelsQuery : event.target.value})} /></h1>
             <ul className='searchedFromList'>
                 {
                     this.state.channelsFromSlack.filter(channel => {
