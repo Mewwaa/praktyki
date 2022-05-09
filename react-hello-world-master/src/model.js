@@ -1,10 +1,3 @@
-// class channels {
-//     constructor(id,name){
-//       this.id = id;
-//       this.name = name;
-//     }
-// }
-
 import React, { Component }  from 'react';
 
 class messages{
