@@ -1,9 +1,4 @@
-class channels {
-    constructor(id,name){
-      this.id = id;
-      this.name = name;
-    }
-}
+import React, { Component }  from 'react';
 
 class messages{
     constructor(id,ifSucceded,content){
@@ -52,4 +47,4 @@ class ItemList  {
     }
 }
 
-export {channels, messages, ItemList, SingleItem}
+export {messages, ItemList, SingleItem}

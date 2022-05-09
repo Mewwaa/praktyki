@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import { createStore } from 'redux'
-import {channels, messages} from './model.js';
 import {
   BrowserRouter as Router,
   Route,
@@ -10,8 +9,8 @@ import {
 import Dashboard from './dashboard';
 import Login from './login.js';
 import {clientId} from './login.js';
+import {messages} from './model.js';
 localStorage.setItem('clientId',clientId);
-
 
 function browseMessages(text) {
   return{
@@ -39,18 +38,6 @@ store2.dispatch(browseMessages(message2))
 store2.dispatch(browseMessages(message3))
 store2.dispatch(browseMessages(message4))
 
-var channels1 = new channels(1,"channel 1")
-var channels2 = new channels(2,"channel 2")
-var channels3 = new channels(3,"channel 3")
-var channels4 = new channels(4,"channel 4")
-const store1 = createStore(b_channles, [])
-
-store1.dispatch(browseChannels(channels1))
-store1.dispatch(browseChannels(channels2))
-store1.dispatch(browseChannels(channels3))
-store1.dispatch(browseChannels(channels4))
-
-
 function b_channles(state = [], action) {
   switch (action.type) {
     case 'BROWSE':
@@ -65,15 +52,6 @@ function browseChannels(text) {
     type: 'BROWSE',
     text
   }
-}
-
-
-localStorage.setItem('channels', JSON.stringify(store1.getState()));
-var channels_list = JSON.parse(localStorage.getItem('channels'));
-for (let index = 0; index < channels_list.length; index++) {
-    var temp_list1 = []
-    const channel = channels_list[index];
-      temp_list1.push(channel)
 }
 
 localStorage.setItem('messages', JSON.stringify(store2.getState()));
@@ -92,7 +70,7 @@ class App extends Component {
         <Router>
           <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard allItems={channels.name} channels={store1.getState()} messages={store2.getState()}/>} />  
+          <Route path="/dashboard" element={<Dashboard messages={store2.getState()}/>} />  
           </Routes>
         </Router>
       </>
