@@ -27,7 +27,7 @@ function browseChannels(text) {
 
 
 const { WebClient }  = require('@slack/web-api');
-const token = 'xoxb-3372401797858-3387082004324-K1tcgVOG81Rg5uN61IU43F9p'
+const token = 'xoxb-3372401797858-3387082004324-vUZraD8NSKzimlgZy8qN54YI'
 const web = new WebClient(token);
 delete web["axios"].defaults.headers["User-Agent"];
 
@@ -210,7 +210,7 @@ class Dashboard extends Component {
                                         }).map((message, idMessages) => (
                                             <div className="success_from_list" key={idMessages}>
                                                 <ul>
-                                                    <li>{message.text} </li>
+                                                    <li className='singleMessageSucceded'>{message.text} </li>
                                                 </ul>
                                             
                                             </div>
@@ -235,7 +235,7 @@ class Dashboard extends Component {
                                         }).map((message, idMessages) => (
                                             <div className="failed_from_list" key={idMessages}>
                                                 <ul>
-                                                    <li>{message.text}</li>
+                                                    <li className="singleMessageFailed">{message.text}</li>
                                                 </ul>
                                             
                                             </div>
