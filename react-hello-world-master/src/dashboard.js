@@ -27,7 +27,7 @@ function browseChannels(text) {
 
 
 const { WebClient }  = require('@slack/web-api');
-const token = 'xoxb-3372401797858-3387082004324-hCoTv0J1XkfHZTBtCWGjvYzL'
+const token = 'xoxb-3372401797858-3387082004324-Lb1Y9xv74mz9kyXyfnCqhhvo'
 const web = new WebClient(token);
 delete web["axios"].defaults.headers["User-Agent"];
 
