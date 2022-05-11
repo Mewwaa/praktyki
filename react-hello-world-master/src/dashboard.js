@@ -2,12 +2,11 @@ import { ReactSlackChat } from 'react-slack-chat';
 import React, { Component } from 'react';
 import './dashboard.css';
 import { AuthFailedModal } from './dialog.js';
-import {ItemList} from './model.js';
 import { createStore } from 'redux'
 
 
 const store1 = createStore(b_channles, [])
-const allItems = store1.name
+
 
 function b_channles(state = [], action) {
   switch (action.type) {
@@ -27,7 +26,7 @@ function browseChannels(text) {
 
 
 const { WebClient }  = require('@slack/web-api');
-const token = 'xoxb-3372401797858-3387082004324-K1tcgVOG81Rg5uN61IU43F9p'
+const token = 'xoxb-3372401797858-3387082004324-RItkxqdHUJmjD1BknoGc4JXH';
 const web = new WebClient(token);
 delete web["axios"].defaults.headers["User-Agent"];
 
@@ -78,25 +77,25 @@ class Dashboard extends Component {
 
     moveSearchedToSavedChannels(itemId) {
         let tempChannelsFromSlack = [...this.state.channelsFromSlack];
-        let tempFilteredChannels = tempChannelsFromSlack.filter(item => item.id == itemId)
+        let tempFilteredChannels = tempChannelsFromSlack.filter(item => item.id === itemId)
 
         let tempChannelsSaved = [ ...this.state.channelsSaved ]
         tempChannelsSaved = tempChannelsSaved.concat(tempFilteredChannels)
         this.setState({
-            channelsFromSlack : tempChannelsFromSlack.filter(item => item.id != itemId),
+            channelsFromSlack : tempChannelsFromSlack.filter(item => item.id !== itemId),
             channelsSaved : tempChannelsSaved,
         })
     }
 
     moveSavedToSearchedChannels(itemId) {
         let tempChannelsSaved = [...this.state.channelsSaved];
-        let tempFilteredSavedChannels = tempChannelsSaved.filter(item => item.id == itemId)
+        let tempFilteredSavedChannels = tempChannelsSaved.filter(item => item.id === itemId)
 
         let tempChannelsFromSlack = [...this.state.channelsFromSlack ]
         tempChannelsFromSlack = tempChannelsFromSlack.concat(tempFilteredSavedChannels)
         this.setState({
             channelsFromSlack : tempChannelsFromSlack,
-            channelsSaved : tempChannelsSaved.filter(item => item.id != itemId),
+            channelsSaved : tempChannelsSaved.filter(item => item.id !== itemId),
         })
     }
 
@@ -163,6 +162,7 @@ class Dashboard extends Component {
                             } else if (channel.name.toLowerCase().includes(this.state.searchChannelsQuery.toLowerCase())) {
                             return channel;
                             }
+                            return ''
                         }).map((channel, idChannels) => (
                             <div className="searchedFromList" key={idChannels}>
                                 <ul>
@@ -207,6 +207,7 @@ class Dashboard extends Component {
                                             } else if (message.text.toLowerCase().includes(this.state.searchMessagesQuery.toLowerCase())) {
                                             return message.text;
                                             }
+                                            return ''
                                         }).map((message, idMessages) => (
                                             <div className="success_from_list" key={idMessages}>
                                                 <ul>
@@ -232,6 +233,7 @@ class Dashboard extends Component {
                                             } else if (message.text.toLowerCase().includes(this.state.searchMessagesQuery.toLowerCase())) {
                                             return message.text;
                                             }
+                                            return ''
                                         }).map((message, idMessages) => (
                                             <div className="failed_from_list" key={idMessages}>
                                                 <ul>
