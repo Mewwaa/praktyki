@@ -27,7 +27,7 @@ function browseChannels(text) {
 
 
 const { WebClient }  = require('@slack/web-api');
-const token = 'xoxb-3372401797858-3387082004324-jhg0HQTh2PsHmKr0BgCeY348'
+const token = 'xoxb-3372401797858-3387082004324-fyjMcSJF1dMlO9lY8gMu4zoC'
 const web = new WebClient(token);
 delete web["axios"].defaults.headers["User-Agent"];
 
@@ -43,20 +43,35 @@ async function getAllChannels(options) {
       return mergedChannels;
     }
     return pageLoaded([], await web.conversations.list(options));
+}
+
+async function fetchMessage(id, ts) {
+  try {
+    const result = await web.conversations.history({
+      channel: id,
+    });
+    return result.messages
   }
+  catch (error) {
+    console.error(error);
+  }
+}
   
 class Dashboard extends Component {
     constructor(props) {
         super(props);
-        this.state = {isLoggedIn: true};
         this.state = {
+            isLoggedIn: true,
             searchChannelsQuery: '',
             searchMessagesQuery: '',
             channelsFromSlack: [],
-            channelsSaved: []
+            channelsSaved: [],
+            messagesSucceded : [],
+            messagesFailed: []
         }
         this.moveSearchedToSavedChannels = this.moveSearchedToSavedChannels.bind(this);
         this.moveSavedToSearchedChannels = this.moveSavedToSearchedChannels.bind(this);
+        this.handleClickChannel = this.handleClickChannel.bind(this)
     }
 
     
@@ -82,6 +97,17 @@ class Dashboard extends Component {
         this.setState({
             channelsFromSlack : tempChannelsFromSlack,
             channelsSaved : tempChannelsSaved.filter(item => item.id != itemId),
+        })
+    }
+
+    handleClickChannel(channel) {
+        fetchMessage(channel.id, channel.shared_team_ids).then((messages) =>{
+            const messagesSucceded = messages.filter((message) => message.text.includes('Successed'))
+            const messagesFailed = messages.filter((message) => message.text.includes('Failed'))
+            this.setState({
+                messagesSucceded : messagesSucceded,
+                messagesFailed : messagesFailed
+            })
         })
     }
 
@@ -113,26 +139,14 @@ class Dashboard extends Component {
         })
       
     };
-    render() {
-        const isLoggedIn = this.state.isLoggedIn;
-        if (!isLoggedIn) {
-            return (
-                <AuthFailedModal/>
-            )
-        }
-    
-        
-    }  
-    render(){
-        return(
-        <div>
-            <ItemList moveSearchedToSavedChannels={this.moveSearchedToSavedChannels} items={this.state.channelsFromSlack} allItems={this.props.store1} />
-            <ItemList moveSearchedToSavedChannels={this.moveSearchedToSavedChannels} items={this.state.channelsSaved} allItems={this.props.store1} />
-        </div>
+
+  render() {
+    const isLoggedIn = this.state.isLoggedIn;
+    if (!isLoggedIn) {
+        return (
+            <AuthFailedModal/>
         )
     }
-    
-  render() {
     return (
       <div className="dashboard_div">
           
@@ -169,10 +183,11 @@ class Dashboard extends Component {
                 
             <ul className='addedFromList'>
                 {   
-                    this.state.channelsSaved.map((item) =>  <ul className='addedFromList'><li>
-                        {item.name}
-                        <button className='removeFromListButton' onClick={() => this.moveSavedToSearchedChannels(item.id)}>-</button>
-                    </li>
+                    this.state.channelsSaved.map((item) =>  <ul className='addedFromList'>
+                        <li onClick={() => this.handleClickChannel(item)}>
+                            {item.name}
+                            <button className='removeFromListButton' onClick={() => this.moveSavedToSearchedChannels(item.id)}>-</button>
+                        </li>
                     <br></br>
                     </ul>)
                 }
@@ -186,16 +201,16 @@ class Dashboard extends Component {
                                 <div className="scrollSucceded" id="scrollSuccededID">
                                 <ol className='success_from_list'>
                                 {
-                                    this.props.messages.filter(message => {
+                                    this.state.messagesSucceded.filter((message) => {
                                             if (this.state.searchMessagesQuery === '') {
-                                                return message
-                                            } else if (message.content.toLowerCase().includes(this.state.searchMessagesQuery.toLowerCase()) && message.ifSucceded === "SUCCEDED") {
-                                            return message;
+                                                return message.text
+                                            } else if (message.text.toLowerCase().includes(this.state.searchMessagesQuery.toLowerCase())) {
+                                            return message.text;
                                             }
                                         }).map((message, idMessages) => (
                                             <div className="success_from_list" key={idMessages}>
                                                 <ul>
-                                                    <li>{message.content} </li>
+                                                    <li>{message.text} </li>
                                                 </ul>
                                             
                                             </div>
@@ -211,16 +226,16 @@ class Dashboard extends Component {
                         <div className="scrollFailed">
                         <ol className='failed_from_list'>
                         {
-                                    this.props.messages.filter(message => {
+                                    this.state.messagesFailed.filter((message) => {
                                             if (this.state.searchMessagesQuery === '') {
-                                                return message
-                                            } else if (message.content.toLowerCase().includes(this.state.searchMessagesQuery.toLowerCase()) && message.ifSucceded === "FAILED") {
-                                            return message;
+                                                return message.text
+                                            } else if (message.text.toLowerCase().includes(this.state.searchMessagesQuery.toLowerCase())) {
+                                            return message.text;
                                             }
                                         }).map((message, idMessages) => (
                                             <div className="failed_from_list" key={idMessages}>
                                                 <ul>
-                                                    <li>{message.content}</li>
+                                                    <li>{message.text}</li>
                                                 </ul>
                                             
                                             </div>
