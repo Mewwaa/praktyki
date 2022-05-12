@@ -3,10 +3,13 @@ import React, { Component } from 'react';
 import './dashboard.css';
 import { AuthFailedModal } from './dialog.js';
 import { createStore } from 'redux'
+const { WebClient }  = require('@slack/web-api');
+const web = new WebClient(token);
+delete web["axios"].defaults.headers["User-Agent"];
 
+const token = 'xoxb-3372401797858-3387082004324-RItkxqdHUJmjD1BknoGc4JXH';
 
 const store1 = createStore(b_channles, [])
-
 
 function b_channles(state = [], action) {
   switch (action.type) {
@@ -23,13 +26,6 @@ function browseChannels(text) {
     text
   }
 }
-
-
-const { WebClient }  = require('@slack/web-api');
-const token = 'xoxb-3372401797858-3387082004324-RItkxqdHUJmjD1BknoGc4JXH';
-const web = new WebClient(token);
-delete web["axios"].defaults.headers["User-Agent"];
-
 
 async function getAllChannels(options) {
     async function pageLoaded(accumulatedChannels, res) {
@@ -211,7 +207,7 @@ class Dashboard extends Component {
                                         }).map((message, idMessages) => (
                                             <div className="success_from_list" key={idMessages}>
                                                 <ul>
-                                                    <li>{message.text} </li>
+                                                    <li className='singleMessageSucceded'>{message.text} </li>
                                                 </ul>
                                             
                                             </div>
@@ -237,7 +233,7 @@ class Dashboard extends Component {
                                         }).map((message, idMessages) => (
                                             <div className="failed_from_list" key={idMessages}>
                                                 <ul>
-                                                    <li>{message.text}</li>
+                                                    <li className="singleMessageFailed">{message.text}</li>
                                                 </ul>
                                             
                                             </div>
