@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@slack/web-api": "^6.7.1",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
+    "@slack/web-api": "^6.7.1",
     "axios": "^0.26.1",
     "babel-jest": "23.6.0",
     "debug": "^4.3.4",

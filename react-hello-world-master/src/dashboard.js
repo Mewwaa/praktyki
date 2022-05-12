@@ -26,8 +26,15 @@ function browseChannels(text) {
 }
 
 
+async function insertName() {
+    let username = prompt("Please enter your name");
+    if (username != null) {
+        return ('Guest')
+    }
+  }
+
 const { WebClient }  = require('@slack/web-api');
-const token = 'xoxb-3372401797858-3387082004324-K1tcgVOG81Rg5uN61IU43F9p'
+const token = 'xoxb-3372401797858-3433774164354-dmJidfK7KYqXCMi89NweSmWA'
 const web = new WebClient(token);
 delete web["axios"].defaults.headers["User-Agent"];
 
@@ -67,14 +74,13 @@ class Dashboard extends Component {
             channelsFromSlack: [],
             channelsSaved: [],
             messagesSucceded : [],
-            messagesFailed: []
+            messagesFailed: [],
+            shouldRenderChat : false
         }
         this.moveSearchedToSavedChannels = this.moveSearchedToSavedChannels.bind(this);
         this.moveSavedToSearchedChannels = this.moveSavedToSearchedChannels.bind(this);
         this.handleClickChannel = this.handleClickChannel.bind(this)
     }
-
-    
 
     moveSearchedToSavedChannels(itemId) {
         let tempChannelsFromSlack = [...this.state.channelsFromSlack];
@@ -124,7 +130,10 @@ class Dashboard extends Component {
             return allChannels;
         })
         ().then((channels)=> {
-            this.setState({channelsFromSlack: channels})
+            this.setState({
+                channelsFromSlack: channels,
+                shouldRenderChat: true
+            })
             for (let index = 0; index < this.state.channelsFromSlack.length; index++) {
                 const element = this.state.channelsFromSlack[index];
                 store1.dispatch(browseChannels(element))
@@ -137,7 +146,26 @@ class Dashboard extends Component {
                 temp_list1.push(channel)
             }
         })
-      
+    };
+
+    getName() {
+        let username = prompt("Please enter your name");
+        if (username != null) {
+            return username
+        } else if(username == null){
+            return ("Guest")
+        }
+        
+        (async () => {
+            const userName = await insertName();
+            return userName;
+        })
+        ().then((botName)=> {
+            this.setState({
+                Names: botName,
+                shouldRenderChat: true
+            })
+        })
     };
 
   render() {
@@ -197,7 +225,6 @@ class Dashboard extends Component {
 
             <div className="succeded_tab">
                             <h1 className='h1divs'>SUCCEDED</h1>
-        
                                 <div className="scrollSucceded" id="scrollSuccededID">
                                 <ol className='success_from_list'>
                                 {
@@ -244,26 +271,19 @@ class Dashboard extends Component {
                         </ol>
                         </div>
                     </div>
-        <ReactSlackChat
-        botName="490bot" // VisitorID, CorpID, Email, IP address etc.
-        apiToken="eG94Yi0xNTI2NjcyMDA4NTI4LTE1MDI5NTcwNTc2MzQteEdWRU1YWkd1SzBPbWlSdzBKZmJ0UjFE"
-        channels={[
-          {
-            name: "random",
-            id: "",
-          },
-          {
-            name: "general",
-            id: ""
-          }
-        ]}
-        helpText="Chat"
-        themeColor="#82CAFF"
-        userImage="http://www.iconshock.com/img_vista/FLAT/mail/jpg/robot_icon.jpg"
-      />
-
+                    { this.state.shouldRenderChat ?
+                        (
+                            <ReactSlackChat
+                                botName= {this.getName()} // VisitorID, CorpID, Email, IP address etc.
+                                apiToken="eG94Yi0zMzcyNDAxNzk3ODU4LTM0NDM3MDQ4ODU4OTMtc1BpTHhONmxIbUV6NXJCZENaZkZwMEtZ"
+                                channels={this.state.channelsFromSlack.length > 0 ? this.state.channelsFromSlack : []}
+                                helpText="Chat"
+                                themeColor="#82CAFF"
+                                userImage="http://www.iconshock.com/img_vista/FLAT/mail/jpg/robot_icon.jpg"
+                            />
+                        ) : ''
+                    }
         </div>
-
     );
   }
 }
