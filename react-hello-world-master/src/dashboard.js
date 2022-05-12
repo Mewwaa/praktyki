@@ -27,7 +27,7 @@ function browseChannels(text) {
 
 
 const { WebClient }  = require('@slack/web-api');
-const token = 'xoxb-3372401797858-3387082004324-EDFrDUWcmSTNLYUmvIgzjXD4'
+const token = 'xoxb-3372401797858-3433774164354-4z89g2nc8pLGwW6FUKNkrNpj'
 const web = new WebClient(token);
 delete web["axios"].defaults.headers["User-Agent"];
 
@@ -102,7 +102,7 @@ class Dashboard extends Component {
 
     handleClickChannel(channel) {
         fetchMessage(channel.id, channel.shared_team_ids).then((messages) =>{
-            const messagesSucceded = messages.filter((message) => message.text.includes('Successed'))
+            const messagesSucceded = messages.filter((message) => message.text.includes('Succeded'))
             const messagesFailed = messages.filter((message) => message.text.includes('Failed'))
             this.setState({
                 messagesSucceded : messagesSucceded,
@@ -147,6 +147,7 @@ class Dashboard extends Component {
             <AuthFailedModal/>
         )
     }
+
     return (
       <div className="dashboard_div">
           
