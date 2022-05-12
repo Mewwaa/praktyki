@@ -9,6 +9,7 @@ import { createStore } from 'redux'
 const store1 = createStore(b_channles, [])
 const allItems = store1.name
 
+
 function b_channles(state = [], action) {
   switch (action.type) {
     case 'BROWSE':
@@ -27,7 +28,7 @@ function browseChannels(text) {
 
 
 const { WebClient }  = require('@slack/web-api');
-const token = 'xoxb-3372401797858-3433774164354-4z89g2nc8pLGwW6FUKNkrNpj'
+const token = 'xoxb-3372401797858-3433774164354-vAVvEI9WscklWwyisGbDb0zn'
 const web = new WebClient(token);
 delete web["axios"].defaults.headers["User-Agent"];
 
