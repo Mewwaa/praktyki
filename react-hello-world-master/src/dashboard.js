@@ -193,12 +193,8 @@ class Dashboard extends Component {
 
             <div className="succeded_tab">
                             <h1 className='h1divs'>SUCCEDED</h1>
-<<<<<<< HEAD
-        
-=======
                             <button onClick={()=>send_mail(['damian.galinski@tomtom.com'], 'test')}>Send Email</button>
                              {/*function for sending emails - to be implemented in chat*/}
->>>>>>> a45aaee3 (ifxes)
                                 <div className="scrollSucceded" id="scrollSuccededID">
                                 <ol className='success_from_list'>
                                 {
