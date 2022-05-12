@@ -172,6 +172,7 @@ button .AddToListButton{
     font-weight: bold;
 }
 
+
 .singleMessageSucceded,.singleMessageFailed{
     border: 1px solid black;
     margin: 10px;
@@ -179,9 +180,11 @@ button .AddToListButton{
     border-radius: 10px;
 }
 
+
 .singleMessageFailed{
     background-color: rgb(253, 237, 237);
 }
+
 
 .singleMessageSucceded{
     background-color: rgb(220, 248, 220)
