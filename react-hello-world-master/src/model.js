@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React from 'react';
 
 class messages{
     constructor(id,ifSucceded,content){
