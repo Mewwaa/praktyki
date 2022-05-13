@@ -5,7 +5,7 @@ import { AuthFailedModal } from './dialog.js';
 import { createStore } from 'redux'
 const token = 'xoxb-3372401797858-3433774164354-WGNLVN1dgbXtgyTeB3L3Lq0l';
 const { WebClient }  = require('@slack/web-api');
-const token = 'xoxb-3372401797858-3433774164354-9puqoJvdvrcmp8YroTxeZBMF'
+const token = 'xoxb-3372401797858-3433774164354-DuHBo30LMMqP8ijcnZfA8g1H'
 const web = new WebClient(token);
 delete web["axios"].defaults.headers["User-Agent"];
 const store1 = createStore(b_channles, [])
@@ -29,6 +29,13 @@ function browseChannels(text) {
   }
 }
 
+
+async function insertName() {
+    let username = prompt("Please enter your name");
+    if (username != null) {
+        return ('Guest')
+    }
+  }
 
 async function getAllChannels(options) {
     async function pageLoaded(accumulatedChannels, res) {
@@ -66,14 +73,15 @@ class Dashboard extends Component {
             channelsSaved: [],
             messagesSucceded : [],
             messagesFailed: [],
-            tempsav : []
+            shouldRenderChat : false,
+            tempsav : [],
+            botName : ''
         }
         this.moveSearchedToSavedChannels = this.moveSearchedToSavedChannels.bind(this);
         this.moveSavedToSearchedChannels = this.moveSavedToSearchedChannels.bind(this);
-        this.handleClickChannel = this.handleClickChannel.bind(this)
+        this.handleClickChannel = this.handleClickChannel.bind(this);
+        this.getName = this.getName.bind(this);
     }
-
-    
 
     moveSearchedToSavedChannels(itemId) {
         let tempChannelsFromSlack = [...this.state.channelsFromSlack];
@@ -129,6 +137,29 @@ class Dashboard extends Component {
         })
 
     }
+  
+    getName() {
+        let username = prompt("Please enter your name");
+        if (username != null) {
+            this.setState({
+                botName: username
+            })
+        } else if(username == null){
+            this.setState({
+                botName: 'Guest'
+            })
+        }
+        
+        // (async () => {
+        //     const userName = await insertName();
+        //     return userName;
+        // })
+        // ().then((botName)=> {
+        //     this.setState({
+        //         botName: botName
+        //     })
+    //   })
+    }
 
     componentDidMount(){
         var client_id_return = localStorage.getItem('clientId');
@@ -143,11 +174,15 @@ class Dashboard extends Component {
             return allChannels;
         })
         ().then((channels)=> {
+            this.getName()
+            this.setState({ 
+                channelsFromSlack: channels,
+                shouldRenderChat: true
+            })
             let channelsFromStore = JSON.parse(localStorage.getItem('savedChannels'))
             if (channelsFromStore) {
                 channelsFromStore.map((channel) =>  savedChannelsStore.dispatch(browseChannels(channel)))
                 this.setState({
-                    channelsFromSlack: channels,
                     channelsSaved: savedChannelsStore.getState() 
                 })
             }
@@ -216,7 +251,6 @@ class Dashboard extends Component {
 
             <div className="succeded_tab">
                             <h1 className='h1divs'>SUCCEDED</h1>
-        
                                 <div className="scrollSucceded" id="scrollSuccededID">
                                 <ol className='success_from_list'>
                                 {
@@ -265,26 +299,19 @@ class Dashboard extends Component {
                         </ol>
                         </div>
                     </div>
-        <ReactSlackChat
-        botName="490bot" // VisitorID, CorpID, Email, IP address etc.
-        apiToken="eG94Yi0xNTI2NjcyMDA4NTI4LTE1MDI5NTcwNTc2MzQteEdWRU1YWkd1SzBPbWlSdzBKZmJ0UjFE"
-        channels={[
-          {
-            name: "random",
-            id: "",
-          },
-          {
-            name: "general",
-            id: ""
-          }
-        ]}
-        helpText="Chat"
-        themeColor="#82CAFF"
-        userImage="http://www.iconshock.com/img_vista/FLAT/mail/jpg/robot_icon.jpg"
-      />
-
+                    { this.state.shouldRenderChat ?
+                        (
+                            <ReactSlackChat
+                                botName= {this.state.botName} // VisitorID, CorpID, Email, IP address etc.
+                                apiToken="eG94Yi0zMzcyNDAxNzk3ODU4LTM0NDM3MDQ4ODU4OTMtc1BpTHhONmxIbUV6NXJCZENaZkZwMEtZ"
+                                channels={this.state.channelsFromSlack.length > 0 ? this.state.channelsFromSlack : []}
+                                helpText="Chat"
+                                themeColor="#82CAFF"
+                                userImage="http://www.iconshock.com/img_vista/FLAT/mail/jpg/robot_icon.jpg"
+                            />
+                        ) : ''
+                    }
         </div>
-
     );
   }
 }
