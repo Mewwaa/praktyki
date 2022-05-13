@@ -4,6 +4,7 @@ import './dashboard.css';
 import { AuthFailedModal } from './dialog.js';
 import {ItemList} from './model.js';
 import { createStore } from 'redux'
+import { Link } from 'react-router-dom';
 
 
 const store1 = createStore(b_channles, [])
@@ -27,7 +28,7 @@ function browseChannels(text) {
 
 
 const { WebClient }  = require('@slack/web-api');
-const token = 'xoxb-3372401797858-3387082004324-K1tcgVOG81Rg5uN61IU43F9p'
+const token = 'xoxb-3372401797858-3433774164354-7eJmaPriMu9n7cXcAhI8FUsx'
 const web = new WebClient(token);
 delete web["axios"].defaults.headers["User-Agent"];
 
@@ -56,6 +57,12 @@ async function fetchMessage(id, ts) {
     console.error(error);
   }
 }
+
+function getUrl(message) {
+    var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+    return message.match(urlRegex)[0]
+}
+  
   
 class Dashboard extends Component {
     constructor(props) {
@@ -102,11 +109,23 @@ class Dashboard extends Component {
 
     handleClickChannel(channel) {
         fetchMessage(channel.id, channel.shared_team_ids).then((messages) =>{
-            const messagesSucceded = messages.filter((message) => message.text.includes('Successed'))
-            const messagesFailed = messages.filter((message) => message.text.includes('Failed'))
+            let messagesSucceded = messages.filter((message) => message.text.includes('Succeded'))
+            let messagesFailed = messages.filter((message) => message.text.includes('Failed'))
+            messagesSucceded = messagesSucceded.map(message => {
+                return {
+                    ...message,
+                    link: getUrl(message.text)
+                };
+            });
+            messagesFailed = messagesFailed.map(message => {
+                return {
+                    ...message,
+                    link: getUrl(message.text)
+                };
+            });
             this.setState({
                 messagesSucceded : messagesSucceded,
-                messagesFailed : messagesFailed
+                messagesFailed : messagesFailed,
             })
         })
     }
@@ -209,9 +228,10 @@ class Dashboard extends Component {
                                             }
                                         }).map((message, idMessages) => (
                                             <div className="success_from_list" key={idMessages}>
-                                                <ul>
-                                                    <li>{message.text} </li>
-                                                </ul>
+                                                <li>
+                                                    {message.text}
+                                                    <div><Link to={message.link}>Open</Link></div>
+                                                </li>
                                             
                                             </div>
                                         ))
@@ -235,7 +255,10 @@ class Dashboard extends Component {
                                         }).map((message, idMessages) => (
                                             <div className="failed_from_list" key={idMessages}>
                                                 <ul>
-                                                    <li>{message.text}</li>
+                                                    <li>
+                                                        {message.text}
+                                                        <div><Link to={message.link}>Open</Link></div>
+                                                    </li>
                                                 </ul>
                                             
                                             </div>
