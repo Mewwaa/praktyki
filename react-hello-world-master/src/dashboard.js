@@ -4,7 +4,7 @@ import './dashboard.css';
 import { AuthFailedModal } from './dialog.js';
 import { createStore } from 'redux'
 const { WebClient }  = require('@slack/web-api');
-const token = 'xoxb-3372401797858-3433774164354-9puqoJvdvrcmp8YroTxeZBMF'
+const token = 'xoxb-3372401797858-3433774164354-DuHBo30LMMqP8ijcnZfA8g1H'
 const web = new WebClient(token);
 delete web["axios"].defaults.headers["User-Agent"];
 
@@ -76,11 +76,13 @@ class Dashboard extends Component {
             messagesSucceded : [],
             messagesFailed: [],
             shouldRenderChat : false,
-            tempsav : []
+            tempsav : [],
+            botName : ''
         }
         this.moveSearchedToSavedChannels = this.moveSearchedToSavedChannels.bind(this);
         this.moveSavedToSearchedChannels = this.moveSavedToSearchedChannels.bind(this);
-        this.handleClickChannel = this.handleClickChannel.bind(this)
+        this.handleClickChannel = this.handleClickChannel.bind(this);
+        this.getName = this.getName.bind(this);
     }
 
     moveSearchedToSavedChannels(itemId) {
@@ -141,21 +143,25 @@ class Dashboard extends Component {
     getName() {
         let username = prompt("Please enter your name");
         if (username != null) {
-            return username
+            this.setState({
+                botName: username
+            })
         } else if(username == null){
-            return ("Guest")
+            this.setState({
+                botName: 'Guest'
+            })
         }
         
-        (async () => {
-            const userName = await insertName();
-            return userName;
-        })
-        ().then((botName)=> {
-            this.setState({
-                Names: botName,
-                shouldRenderChat: true
-            })
-      })
+        // (async () => {
+        //     const userName = await insertName();
+        //     return userName;
+        // })
+        // ().then((botName)=> {
+        //     this.setState({
+        //         botName: botName
+        //     })
+    //   })
+    }
 
     componentDidMount(){
         var client_id_return = localStorage.getItem('clientId');
@@ -170,11 +176,15 @@ class Dashboard extends Component {
             return allChannels;
         })
         ().then((channels)=> {
+            this.getName()
+            this.setState({ 
+                channelsFromSlack: channels,
+                shouldRenderChat: true
+            })
             let channelsFromStore = JSON.parse(localStorage.getItem('savedChannels'))
             if (channelsFromStore) {
                 channelsFromStore.map((channel) =>  savedChannelsStore.dispatch(browseChannels(channel)))
                 this.setState({
-                    channelsFromSlack: channels,
                     channelsSaved: savedChannelsStore.getState() 
                 })
             }
@@ -294,7 +304,7 @@ class Dashboard extends Component {
                     { this.state.shouldRenderChat ?
                         (
                             <ReactSlackChat
-                                botName= {this.getName()} // VisitorID, CorpID, Email, IP address etc.
+                                botName= {this.state.botName} // VisitorID, CorpID, Email, IP address etc.
                                 apiToken="eG94Yi0zMzcyNDAxNzk3ODU4LTM0NDM3MDQ4ODU4OTMtc1BpTHhONmxIbUV6NXJCZENaZkZwMEtZ"
                                 channels={this.state.channelsFromSlack.length > 0 ? this.state.channelsFromSlack : []}
                                 helpText="Chat"
