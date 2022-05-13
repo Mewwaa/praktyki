@@ -4,12 +4,14 @@ import './dashboard.css';
 import { AuthFailedModal } from './dialog.js';
 import { createStore } from 'redux'
 const { WebClient }  = require('@slack/web-api');
+const token = 'xoxb-3372401797858-3433774164354-9puqoJvdvrcmp8YroTxeZBMF'
 const web = new WebClient(token);
 delete web["axios"].defaults.headers["User-Agent"];
 
-const token = 'xoxb-3372401797858-3387082004324-RItkxqdHUJmjD1BknoGc4JXH';
+
 
 const store1 = createStore(b_channles, [])
+
 
 function b_channles(state = [], action) {
   switch (action.type) {
@@ -97,7 +99,7 @@ class Dashboard extends Component {
 
     handleClickChannel(channel) {
         fetchMessage(channel.id, channel.shared_team_ids).then((messages) =>{
-            const messagesSucceded = messages.filter((message) => message.text.includes('Successed'))
+            const messagesSucceded = messages.filter((message) => message.text.includes('Succeded'))
             const messagesFailed = messages.filter((message) => message.text.includes('Failed'))
             this.setState({
                 messagesSucceded : messagesSucceded,
@@ -142,6 +144,7 @@ class Dashboard extends Component {
             <AuthFailedModal/>
         )
     }
+
     return (
       <div className="dashboard_div">
           
