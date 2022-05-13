@@ -38,21 +38,6 @@ store2.dispatch(browseMessages(message2))
 store2.dispatch(browseMessages(message3))
 store2.dispatch(browseMessages(message4))
 
-function b_channles(state = [], action) {
-  switch (action.type) {
-    case 'BROWSE':
-      return state.concat(action.text)
-    default:
-      return state
-  }
-}
-
-function browseChannels(text) {
-  return{
-    type: 'BROWSE',
-    text
-  }
-}
 
 localStorage.setItem('messages', JSON.stringify(store2.getState()));
 var messages_list = JSON.parse(localStorage.getItem('messages'));

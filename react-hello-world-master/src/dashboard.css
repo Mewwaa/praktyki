@@ -59,16 +59,20 @@ html, body {
     width: 30%;
     background-color: #acacae;
     font-size: 20px;
-    overflow:auto;
+    overflow-y: auto;
+    white-space: normal;
+    word-wrap: break-word;
     float:left;
     border-bottom: 1px solid black;
 }
 
-.failed_tab{overflow: hidden;
+.failed_tab{
     width: 30%;
     font-size: 20px;
     height: 100%;
     float: left;
+    white-space: normal;
+    word-wrap: break-word;
     overflow:auto;
     box-shadow:-1px 0px 0px 0px black;
     background-color: #acacae;
@@ -166,4 +170,38 @@ button .AddToListButton{
     height: 30px;
     width: 30px;
     font-weight: bold;
+}
+
+
+.singleMessageSucceded,.singleMessageFailed{
+    border: 1px solid black;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+
+.singleMessageFailed{
+    background-color: rgb(253, 237, 237);
+}
+
+
+.singleMessageSucceded{
+    background-color: rgb(220, 248, 220)
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: #999; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #666; 
 }
