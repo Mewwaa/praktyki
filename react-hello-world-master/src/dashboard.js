@@ -4,10 +4,11 @@ import './dashboard.css';
 import { AuthFailedModal } from './dialog.js';
 import { createStore } from 'redux'
 const { WebClient }  = require('@slack/web-api');
+const token = 'xoxb-3372401797858-3433774164354-9puqoJvdvrcmp8YroTxeZBMF'
 const web = new WebClient(token);
 delete web["axios"].defaults.headers["User-Agent"];
 
-const token = 'xoxb-3372401797858-3433774164354-4z89g2nc8pLGwW6FUKNkrNpj'
+
 
 const store1 = createStore(b_channles, [])
 
