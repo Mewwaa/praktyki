@@ -2,13 +2,19 @@ import { ReactSlackChat } from 'react-slack-chat';
 import React, { Component } from 'react';
 import './dashboard.css';
 import { AuthFailedModal } from './dialog.js';
-import {ItemList} from './model.js';
 import { createStore } from 'redux'
+const { WebClient }  = require('@slack/web-api');
+const token = 'xoxb-3372401797858-3433774164354-9puqoJvdvrcmp8YroTxeZBMF'
+const web = new WebClient(token);
+delete web["axios"].defaults.headers["User-Agent"];
+
 
 
 const store1 = createStore(b_channles, [])
+
 const allItems = store1.name
 const savedChannelsStore = createStore(b_channles, [])
+
 function b_channles(state = [], action) {
   switch (action.type) {
     case 'BROWSE':
@@ -24,12 +30,6 @@ function browseChannels(text) {
     text
   }
 }
-
-
-const { WebClient }  = require('@slack/web-api');
-const token = 'xoxb-3372401797858-3433774164354-GO3STspBaWuB7Y8Kcb4VGhMY'
-const web = new WebClient(token);
-delete web["axios"].defaults.headers["User-Agent"];
 
 
 async function getAllChannels(options) {
@@ -79,7 +79,7 @@ class Dashboard extends Component {
 
     moveSearchedToSavedChannels(itemId) {
         let tempChannelsFromSlack = [...this.state.channelsFromSlack];
-        let tempFilteredChannels = tempChannelsFromSlack.filter(item => item.id == itemId)
+        let tempFilteredChannels = tempChannelsFromSlack.filter(item => item.id === itemId)
 
         let tempChannelsSaved = [ ...this.state.channelsSaved ]
         tempChannelsSaved = tempChannelsSaved.concat(tempFilteredChannels)
@@ -101,13 +101,13 @@ class Dashboard extends Component {
     moveSavedToSearchedChannels(itemId) {
         
         let tempChannelsSaved = [...this.state.channelsSaved];
-        let tempFilteredSavedChannels = tempChannelsSaved.filter(item => item.id == itemId)
+        let tempFilteredSavedChannels = tempChannelsSaved.filter(item => item.id === itemId)
         let tempChannelsFromSlack = [...this.state.channelsFromSlack ]
         tempChannelsFromSlack = tempChannelsFromSlack.concat(tempFilteredSavedChannels)
         this.state.tempsav = tempChannelsSaved
         this.setState({
             channelsFromSlack : tempChannelsFromSlack,
-            channelsSaved : tempChannelsSaved.filter(item => item.id != itemId),
+            channelsSaved : tempChannelsSaved.filter(item => item.id !== itemId),
         })
         for (let index = 0; index < tempChannelsSaved.length; index++) {
             const element = tempChannelsSaved[index];
@@ -122,7 +122,7 @@ class Dashboard extends Component {
 
     handleClickChannel(channel) {
         fetchMessage(channel.id, channel.shared_team_ids).then((messages) =>{
-            const messagesSucceded = messages.filter((message) => message.text.includes('Successed'))
+            const messagesSucceded = messages.filter((message) => message.text.includes('Succeded'))
             const messagesFailed = messages.filter((message) => message.text.includes('Failed'))
             this.setState({
                 messagesSucceded : messagesSucceded,
@@ -167,7 +167,6 @@ class Dashboard extends Component {
             <AuthFailedModal/>
         )
     }
-    
     return (
       <div className="dashboard_div">
           
@@ -184,6 +183,7 @@ class Dashboard extends Component {
                             } else if (channel.name.toLowerCase().includes(this.state.searchChannelsQuery.toLowerCase())) {
                             return channel;
                             }
+                            return ''
                         }).map((channel, idChannels) => (
                             <div className="searchedFromList" key={idChannels}>
                                 <ul>
@@ -228,10 +228,11 @@ class Dashboard extends Component {
                                             } else if (message.text.toLowerCase().includes(this.state.searchMessagesQuery.toLowerCase())) {
                                             return message.text;
                                             }
+                                            return ''
                                         }).map((message, idMessages) => (
                                             <div className="success_from_list" key={idMessages}>
                                                 <ul>
-                                                    <li>{message.text} </li>
+                                                    <li className='singleMessageSucceded'>{message.text} </li>
                                                 </ul>
                                             
                                             </div>
@@ -253,10 +254,11 @@ class Dashboard extends Component {
                                             } else if (message.text.toLowerCase().includes(this.state.searchMessagesQuery.toLowerCase())) {
                                             return message.text;
                                             }
+                                            return ''
                                         }).map((message, idMessages) => (
                                             <div className="failed_from_list" key={idMessages}>
                                                 <ul>
-                                                    <li>{message.text}</li>
+                                                    <li className="singleMessageFailed">{message.text}</li>
                                                 </ul>
                                             
                                             </div>
