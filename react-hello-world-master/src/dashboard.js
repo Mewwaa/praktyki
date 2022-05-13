@@ -8,7 +8,7 @@ import { createStore } from 'redux'
 
 const store1 = createStore(b_channles, [])
 const allItems = store1.name
-
+const savedChannelsStore = createStore(b_channles, [])
 function b_channles(state = [], action) {
   switch (action.type) {
     case 'BROWSE':
@@ -27,7 +27,7 @@ function browseChannels(text) {
 
 
 const { WebClient }  = require('@slack/web-api');
-const token = 'xoxb-3372401797858-3387082004324-K1tcgVOG81Rg5uN61IU43F9p'
+const token = 'xoxb-3372401797858-3433774164354-GO3STspBaWuB7Y8Kcb4VGhMY'
 const web = new WebClient(token);
 delete web["axios"].defaults.headers["User-Agent"];
 
@@ -67,7 +67,8 @@ class Dashboard extends Component {
             channelsFromSlack: [],
             channelsSaved: [],
             messagesSucceded : [],
-            messagesFailed: []
+            messagesFailed: [],
+            tempsav : []
         }
         this.moveSearchedToSavedChannels = this.moveSearchedToSavedChannels.bind(this);
         this.moveSavedToSearchedChannels = this.moveSavedToSearchedChannels.bind(this);
@@ -82,22 +83,41 @@ class Dashboard extends Component {
 
         let tempChannelsSaved = [ ...this.state.channelsSaved ]
         tempChannelsSaved = tempChannelsSaved.concat(tempFilteredChannels)
+
+        const channelsInStore = savedChannelsStore.getState()
+        for (let index = 0; index < tempChannelsSaved.length; index++) {
+            const element = tempChannelsSaved[index];
+            if(element.id == itemId && !channelsInStore.find((elem) => elem.id == itemId)){
+                savedChannelsStore.dispatch(browseChannels(element))
+            }
+        }
         this.setState({
             channelsFromSlack : tempChannelsFromSlack.filter(item => item.id != itemId),
-            channelsSaved : tempChannelsSaved,
+            channelsSaved : savedChannelsStore.getState(),
         })
+        localStorage.setItem('savedChannels', JSON.stringify(savedChannelsStore.getState()));
     }
-
+    
     moveSavedToSearchedChannels(itemId) {
+        
         let tempChannelsSaved = [...this.state.channelsSaved];
         let tempFilteredSavedChannels = tempChannelsSaved.filter(item => item.id == itemId)
-
         let tempChannelsFromSlack = [...this.state.channelsFromSlack ]
         tempChannelsFromSlack = tempChannelsFromSlack.concat(tempFilteredSavedChannels)
+        this.state.tempsav = tempChannelsSaved
         this.setState({
             channelsFromSlack : tempChannelsFromSlack,
             channelsSaved : tempChannelsSaved.filter(item => item.id != itemId),
         })
+        for (let index = 0; index < tempChannelsSaved.length; index++) {
+            const element = tempChannelsSaved[index];
+            if(element.id == itemId){
+                this.state.tempsav.splice(index,1)
+                
+            }
+        }
+        localStorage.removeItem('savedChannels');
+        localStorage.setItem('savedChannels', JSON.stringify(this.state.tempsav));
     }
 
     handleClickChannel(channel) {
@@ -109,6 +129,7 @@ class Dashboard extends Component {
                 messagesFailed : messagesFailed
             })
         })
+
     }
 
     componentDidMount(){
@@ -124,29 +145,29 @@ class Dashboard extends Component {
             return allChannels;
         })
         ().then((channels)=> {
-            this.setState({channelsFromSlack: channels})
-            for (let index = 0; index < this.state.channelsFromSlack.length; index++) {
-                const element = this.state.channelsFromSlack[index];
-                store1.dispatch(browseChannels(element))
-            }
-            localStorage.setItem('channels', JSON.stringify(store1.getState()));
-            var channels_list = JSON.parse(localStorage.getItem('channels'));
-            for (let index = 0; index < channels_list.length; index++) {
-                var temp_list1 = []
-                const channel = channels_list[index];
-                temp_list1.push(channel)
+            let channelsFromStore = JSON.parse(localStorage.getItem('savedChannels'))
+            if (channelsFromStore) {
+                channelsFromStore.map((channel) =>  savedChannelsStore.dispatch(browseChannels(channel)))
+                this.setState({
+                    channelsFromSlack: channels,
+                    channelsSaved: savedChannelsStore.getState() 
+                })
             }
         })
-      
     };
 
   render() {
+    let loclstr1 =[]
+    let loclstr = localStorage.getItem('savedChannels')
+    loclstr1.concat(loclstr)
+ 
     const isLoggedIn = this.state.isLoggedIn;
     if (!isLoggedIn) {
         return (
             <AuthFailedModal/>
         )
     }
+    
     return (
       <div className="dashboard_div">
           
