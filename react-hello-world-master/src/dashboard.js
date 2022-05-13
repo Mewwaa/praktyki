@@ -1,13 +1,16 @@
 import { ReactSlackChat } from 'react-slack-chat';
 import React, { Component } from 'react';
+import { send_mail } from './email.js';
 import './dashboard.css';
 import { AuthFailedModal } from './dialog.js';
 import { createStore } from 'redux'
+const token = 'xoxb-3372401797858-3433774164354-GO3STspBaWuB7Y8Kcb4VGhMY';
 const { WebClient }  = require('@slack/web-api');
 const web = new WebClient(token);
 delete web["axios"].defaults.headers["User-Agent"];
 
-const token = 'xoxb-3372401797858-3387082004324-RItkxqdHUJmjD1BknoGc4JXH';
+
+
 
 const store1 = createStore(b_channles, [])
 
@@ -266,6 +269,9 @@ class Dashboard extends Component {
     );
   }
 }
+
 export default Dashboard;
+// exports.message = message;
+// exports.channel.name = channelname
 
 
